@@ -14,6 +14,11 @@ Trying out [Dashing](http://shopify.github.com/dashing).
 
 Deployable on Heroku, see [these instructions](https://github.com/Shopify/dashing/wiki/How-to%3A-Deploy-to-Heroku).
 
+Set configuration:
+
+    heroku config:add DASHING_AUTH_TOKEN=your_token
+    heroku config:add DASHING_OAUTH_DOMAIN=minnpost.com
+
 ## Authentication
 
 Authentication is setup to use Google OAuth.  Set up with [these instructions](https://github.com/Shopify/dashing/wiki/How-to%3A-Add-authentication#authenticating-with-google-apps).
