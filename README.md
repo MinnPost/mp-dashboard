@@ -10,6 +10,10 @@ Trying out [Dashing](http://shopify.github.com/dashing).
 
 1. `dashing start`
 
+## Deploy
+
+Deployable on Heroku, see [these instructions](https://github.com/Shopify/dashing/wiki/How-to%3A-Deploy-to-Heroku).
+
 ## Authentication
 
 Authentication is setup to use Google OAuth.  Set up with [these instructions](https://github.com/Shopify/dashing/wiki/How-to%3A-Add-authentication#authenticating-with-google-apps).
