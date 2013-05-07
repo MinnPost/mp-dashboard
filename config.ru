@@ -4,6 +4,7 @@ require 'dashing'
 
 configure do
   set :auth_token, ENV['DASHING_AUTH_TOKEN']
+  set :default_dashboard, 'minnpost'
 
   helpers do
     def protected!
