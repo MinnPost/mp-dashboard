@@ -19,6 +19,11 @@ Set configuration:
 
     heroku config:add DASHING_AUTH_TOKEN=your_token
     heroku config:add DASHING_OAUTH_DOMAIN=minnpost.com
+    
+Install a database
+
+    heroku addons:add heroku-postgresql
+    heroku run bundle exec rake db:migrate
 
 ## Authentication
 
