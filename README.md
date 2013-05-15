@@ -1,10 +1,11 @@
-Trying out [Dashing](http://shopify.github.com/dashing).
+The MinnPost Dashboard is an internal tool for tracking and displaying metrics across the organization.  It is based on the [Dashing](http://shopify.github.com/dashing) platform.  The main feature added is the ability to periodically save metrics so that historical records can be kept.
 
 ## Install and configure
 
 1. `gem install dashing`
 1. Set authentication token.  `export DASHING_AUTH_TOKEN=your_token`
 1. Set OAuth domain.  `export DASHING_OAUTH_DOMAIN=minnpost.com`
+1. `bundle install && bundle exec rake db:migrate`
 
 ## Run
 

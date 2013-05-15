@@ -2,7 +2,7 @@
 require 'net/http'
 require 'json'
 require 'sinatra/activerecord'
-require './models/metric_history'
+require './models/metric'
 
 # Function to gets stats
 def get_fb_stats
@@ -28,12 +28,12 @@ end
 
 # Save data to db
 SCHEDULER.every '2m' do
-  @MH = MetricHistory.new({
+  @metric = Metric.new({
     metric: 'fblinkstat',
     created: Time.now,
     value: get_fb_stats
   })
-  if @model.save
+  if @metric.save
     puts 'Save FB stats.'
   end
 end

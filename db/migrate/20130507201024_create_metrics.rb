@@ -1,6 +1,6 @@
-class MetricHistory < ActiveRecord::Migration
+class CreateMetrics < ActiveRecord::Migration
   def up
-    create_table :metric_history do |t|
+    create_table :metrics do |t|
       t.integer "id"
       t.string "metric"
       t.datetime "created", :null => false
@@ -9,6 +9,6 @@ class MetricHistory < ActiveRecord::Migration
   end
 
   def down
-    drop_table :metric_history
+    drop_table :metrics
   end
 end
