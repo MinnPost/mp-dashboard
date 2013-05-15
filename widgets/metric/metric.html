@@ -1,0 +1,13 @@
+<!--
+
+Include widget:
+<div data-id="your-data-id" data-title="Title" class="widget widget-graph rickshaw_graph">
+
+Send data:
+send_event('your-data-id', single_data_point)
+-->
+<h1 class="title" data-bind="title"></h1>
+
+<h2 class="value" data-bind="current | prettyNumber | prepend prefix"></h2>
+
+<p class="more-info" data-bind="moreinfo"></p>
