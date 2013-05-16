@@ -46,6 +46,6 @@ SCHEDULER.every '10m', :first_in => '1s' do
   
   # Get new data
   data << { :x => Time.now.to_i, :y => get_fb_stats()[3][:value] }
-  puts data.inspect
+  
   send_event('fblinkstat', :points => data )
 end
