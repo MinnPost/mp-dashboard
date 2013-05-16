@@ -9,6 +9,7 @@ class Dashing.Metric extends Dashing.Widget
 
   ready: ->
     container = $(@node).parent()
+    @graphColor = @graphColor || '#C93C26' #'rgba(0, 0, 0, 0.5)'
 
     # Gross hacks. Let's fix this.
     width = (Dashing.widget_base_dimensions[0] * container.data('sizex')) + Dashing.widget_margins[0] * 2 * (container.data('sizex') - 1)
@@ -19,7 +20,7 @@ class Dashing.Metric extends Dashing.Widget
       width: width
       height: height
       series: [{
-        color: '#FFFFFF',
+        color: @graphColor,
         data: [{ x:0, y: 0 }]
       }]
     )
@@ -31,8 +32,7 @@ class Dashing.Metric extends Dashing.Widget
     
     x_axis = new Rickshaw.Graph.Axis.X({
       graph: @graph
-      orientation: 'bottom'
-      pixelsPerTick: 200,
+      pixelsPerTick: 175
       tickFormat: (x) ->
         new moment.unix(x).format('L')
     });
@@ -40,9 +40,7 @@ class Dashing.Metric extends Dashing.Widget
     hover = new Rickshaw.Graph.HoverDetail({
       graph: @graph,
       formatter: (series, x, y) ->
-        'Links: ' + y
-      xFormatter: (x) ->
-        new moment.unix(x).format('L LT')
+        'Links at ' + new moment.unix(x).format('L LT') + ': <br />' + y
     });
     
     @graph.render()

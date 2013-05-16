@@ -23,7 +23,7 @@ def get_fb_stats
 end
 
 # Save data to db
-SCHEDULER.cron '0 0 22 * * *' do
+SCHEDULER.cron '0 15 13 * * *' do
   @metric = Metric.new({
     :metric => 'fblinkstat',
     :created => Time.now,
@@ -41,15 +41,11 @@ SCHEDULER.every '10m', :first_in => '1s' do
   
   # Get historical data
   @metrics = Metric.all(:order => 'created ASC').each do |metric|
-    if metric.value['items'] == nil
-      data << { :x => metric.created.to_i, :y => metric.value[3]['value'] }
-    else
-      data << { :x => metric.created.to_i, :y => metric.value['items'][3]['value'] }
-    end
+    data << { :x => metric.created.to_i, :y => metric.value[3]['value'] }
   end
   
   # Get new data
   data << { :x => Time.now.to_i, :y => get_fb_stats()[3][:value] }
-  
+  puts data.inspect
   send_event('fblinkstat', :points => data )
 end

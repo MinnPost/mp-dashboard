@@ -17,13 +17,14 @@ Deployable on Heroku, see [these instructions](https://github.com/Shopify/dashin
 
 Set configuration:
 
-    heroku config:add DASHING_AUTH_TOKEN=your_token
-    heroku config:add DASHING_OAUTH_DOMAIN=minnpost.com
+1. `heroku config:add DASHING_AUTH_TOKEN=your_token`
+1. `heroku config:add DASHING_OAUTH_DOMAIN=minnpost.com`
     
 Install a database
 
-    heroku addons:add heroku-postgresql
-    heroku run bundle exec rake db:migrate
+1. `heroku addons:add heroku-postgresql`
+1. This does not seem right, but the app requires a `DATABASE_URL` which heroku should make on deploy, but this is not working, so manually do this.  See your DB config with `heroku config`, then: `heroku config:add DATABASE_URL=the_string_from_the_other_config_value`
+1. `heroku run bundle exec rake db:migrate`
 
 ## Authentication
 

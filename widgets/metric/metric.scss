@@ -2,10 +2,8 @@
 // Sass declarations
 // ----------------------------------------------------------------------------
 $background-color:  #dc5945;
-
-$title-color:       rgba(255, 255, 255, 0.7);
-$moreinfo-color:    rgba(255, 255, 255, 0.3);
-$tick-color:        rgba(0, 0, 0, 0.4);
+$title-color: rgba(255, 255, 255, 0.7);
+$tick-color: #BDBDBD;
 
 
 // ----------------------------------------------------------------------------
@@ -19,8 +17,8 @@ $tick-color:        rgba(0, 0, 0, 0.4);
 
   svg {
     position: absolute;
-    opacity: 0.4;
-    fill-opacity: 0.4;
+    opacity: 0.8;
+    fill-opacity: 0.8;
     left: 0px;
     top: 0px;
   }
@@ -28,39 +26,18 @@ $tick-color:        rgba(0, 0, 0, 0.4);
   .title, .value {
     position: relative;
     z-index: 99;
-    opacity: 0.75;
   }
 
   .title {
     color: $title-color;
   }
-
-  .more-info {
-    color: $moreinfo-color;
-    font-weight: 600;
-    font-size: 20px;
-    margin-top: 0;
-  }
-
-  .x_tick {
-    position: absolute;
-    bottom: 0;
-    .title {
-      font-size: 20px;
-      color: $tick-color;
-      opacity: 0.5;
-      padding-bottom: 3px;
-    }
-  }
-
-  .y_ticks {
-    font-size: 20px;
+  
+  .y_ticks text,
+  .x_ticks_d3 text {
+    font-size: .75em;
+    stroke: $tick-color;
     fill: $tick-color;
-    fill-opacity: 1;
+    stroke-opacity: 0.8;
+    fill-opacity: 0.8;
   }
-
-  .domain {
-    display: none;
-  }
-
 }
