@@ -4,7 +4,7 @@ require 'json'
 require 'sinatra/activerecord'
 require './models/metric'
 
-# Function to gets FB stats
+# Function to gets FB links stats
 def get_fb_stats
   fbstat = []
   
@@ -22,10 +22,10 @@ def get_fb_stats
   fbstat
 end
 
-# Save data to db
+# Save metric: link stats
 SCHEDULER.cron '0 15 13 * * *' do
   @metric = Metric.new({
-    :metric => 'fblinkstat',
+    :metric => 'fb_link_stats',
     :created => Time.now,
     :value => get_fb_stats
   })
@@ -35,17 +35,17 @@ SCHEDULER.cron '0 15 13 * * *' do
   end
 end
 
-# Send data to dashboard, the total count only
+# Send data to dashboard: link stats, total count
 SCHEDULER.every '10m', :first_in => '1s' do
   data = []
   
   # Get historical data
-  @metrics = Metric.all(:order => 'created ASC').each do |metric|
+  @metrics = Metric.find_all_by_metric('fb_link_stats', :order => 'created ASC').each do |metric|
     data << { :x => metric.created.to_i, :y => metric.value[3]['value'] }
   end
   
   # Get new data
   data << { :x => Time.now.to_i, :y => get_fb_stats()[3][:value] }
   
-  send_event('fblinkstat', :points => data )
+  send_event('fb_link_stats_total_count', :points => data )
 end
