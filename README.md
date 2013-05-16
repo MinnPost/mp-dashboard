@@ -7,6 +7,13 @@ The MinnPost Dashboard is an internal tool for tracking and displaying metrics a
 1. Set OAuth domain.  `export DASHING_OAUTH_DOMAIN=minnpost.com`
 1. `bundle install && bundle exec rake db:migrate`
 
+### Setting up services
+
+This project connects to many different services, the following tries to document how to set them up for connection:
+
+* Google analytics
+    * See [these instructions](https://github.com/tpitale/legato/wiki/OAuth2-and-Google) here which are a bit ridiculous.  You will end up setting 3 environment variables. 
+
 ## Run
 
 1. `dashing start`
