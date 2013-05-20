@@ -64,6 +64,5 @@ SCHEDULER.every '1h', :first_in => '1s' do
     data << { :x => DateTime.strptime(r[0] + r[1], '%Y%m').to_i , :y => r[2].to_f.round(3) }
   end
   
-  puts data
   send_event('google_analytics_page_views_per_visit', :points => data )
 end
