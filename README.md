@@ -11,8 +11,19 @@ The MinnPost Dashboard is an internal tool for tracking and displaying metrics a
 
 This project connects to many different services, the following tries to document how to set them up for connection:
 
-* Google analytics
-    * See [these instructions](https://github.com/tpitale/legato/wiki/OAuth2-and-Google) here which are a bit ridiculous.  You will end up setting 3 environment variables. 
+#### Google API for analytics.
+
+To access Google Analytics, we must use the Google API.  Some help about keys [here](http://ar.zu.my/how-to-store-private-key-files-in-heroku/).
+
+1. Go the [Google API Console](https://code.google.com/apis/console/) and create a new project.
+1. Enable Google Analytics
+1. Under API Access, click Create an OAuth 2.0 client ID
+1. Give it a product name
+1. Choose Service Account
+1. Download key
+1. Add the email address for the key to Google Analytics access
+1. Set environemtn variable for email: `export DASHING_GAPI_ISSUER=XXXX@developer.gserviceaccount.com`
+1. Parse out OpenSSL cert using `irb`: `Google::APIClient::KeyUtils.load_from_pkcs12('<PATH_TO_KEY>', 'notasecret').inspect`.  This will output a multi-line key string.  Set it as an environment variable and make sure to use double quotes: `export DASHING_GAPI_PRIVATE_KEY="<LONG_KEY>"`
 
 ## Run
 
@@ -24,9 +35,11 @@ Deployable on Heroku, see [these instructions](https://github.com/Shopify/dashin
 
 Set configuration:
 
+1. `heroku config:set RACK_ENV=production`
 1. `heroku config:add DASHING_AUTH_TOKEN=your_token`
 1. `heroku config:add DASHING_OAUTH_DOMAIN=minnpost.com`
-1. `heroku config:set RACK_ENV=production`
+1. `heroku config:add DASHING_GAPI_ISSUER=XXXX@developer.gserviceaccount.com` (See Google API keys above)
+1. `heroku config:add DASHING_GAPI_PRIVATE_KEY="<LONG_STRING>"` (See Google API keys above)
     
 Install a database
 

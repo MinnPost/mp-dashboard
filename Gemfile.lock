@@ -12,7 +12,12 @@ GEM
     activesupport (3.2.13)
       i18n (= 0.6.1)
       multi_json (~> 1.0)
+    addressable (2.3.4)
     arel (3.0.2)
+    autoparse (0.3.3)
+      addressable (>= 2.3.1)
+      extlib (>= 0.9.15)
+      multi_json (>= 1.0.0)
     backports (3.3.0)
     builder (3.0.4)
     coffee-script (2.2.0)
@@ -33,28 +38,30 @@ GEM
     eventmachine (1.0.3)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    extlib (0.9.16)
     faraday (0.8.7)
       multipart-post (~> 1.1)
+    google-api-client (0.6.3)
+      addressable (>= 2.3.2)
+      autoparse (>= 0.3.3)
+      extlib (>= 0.9.15)
+      faraday (~> 0.8.4)
+      jwt (>= 0.1.5)
+      launchy (>= 2.1.1)
+      multi_json (>= 1.0.0)
+      signet (>= 0.4.4)
+      uuidtools (>= 2.1.0)
     hashie (2.0.4)
     hike (1.2.2)
-    httpauth (0.2.0)
     i18n (0.6.1)
     json (1.7.7)
     jwt (0.1.8)
       multi_json (>= 1.5)
-    legato (0.0.9)
-      multi_json
+    launchy (2.3.0)
+      addressable (~> 2.3)
     multi_json (1.7.3)
-    multi_xml (0.5.3)
     multipart-post (1.2.0)
     newrelic_rpm (3.6.1.88)
-    oauth2 (0.9.1)
-      faraday (~> 0.8)
-      httpauth (~> 0.1)
-      jwt (~> 0.1.4)
-      multi_json (~> 1.0)
-      multi_xml (~> 0.5)
-      rack (~> 1.2)
     omniauth (1.1.4)
       hashie (>= 1.2, < 3)
       rack
@@ -81,6 +88,11 @@ GEM
     rufus-scheduler (2.0.19)
       tzinfo (>= 0.3.23)
     sass (3.2.8)
+    signet (0.4.5)
+      addressable (>= 2.2.3)
+      faraday (~> 0.8.1)
+      jwt (>= 0.1.5)
+      multi_json (>= 1.0.0)
     sinatra (1.4.2)
       rack (~> 1.5, >= 1.5.2)
       rack-protection (~> 1.4)
@@ -108,6 +120,7 @@ GEM
     thor (0.18.1)
     tilt (1.4.0)
     tzinfo (0.3.37)
+    uuidtools (2.1.4)
 
 PLATFORMS
   ruby
@@ -115,10 +128,9 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   dashing
+  google-api-client
   json (~> 1.7.7)
-  legato
   newrelic_rpm
-  oauth2
   omniauth-google-apps
   pg
   rake (~> 10.0.4)

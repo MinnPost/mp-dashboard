@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 require 'net/http'
 require 'json'
-require 'oauth2'
-require 'legato'
+require 'date'
+require 'google/api_client'
 require 'sinatra/activerecord'
 require './models/metric'
 
@@ -18,40 +18,52 @@ require './models/metric'
 # https://developers.google.com/analytics/devguides/reporting/core/v3/limits-quotas
 ##
 
-# MinnPost.com propery ID
-property_id = 'UA-3385191-1'
-
-# Class for geting page-views per visit
-class Pagesviews
-  extend Legato::Model
-
-  metrics :pageviewsPerVisit
-end
+# GA profile IDs
+profile_id_minnpost_com = '6603264'
 
 # Connect
-def ga_oauth_connect
-  client = OAuth2::Client.new(ENV['LEGATO_OAUTH_CLIENT_ID'], ENV['LEGATO_OAUTH_SECRET_KEY'], {
-    :authorize_url => 'https://accounts.google.com/o/oauth2/auth',
-    :token_url => 'https://accounts.google.com/o/oauth2/token'
-  })
-  client.auth_code.authorize_url({
+def ga_connect
+  client = Google::APIClient.new(
+    :application_name => 'MP Dashboard',
+    :application_version => '0.0.1')
+    
+  key = OpenSSL::PKey::RSA.new(ENV['DASHING_GAPI_PRIVATE_KEY'], 'notasecret')
+  client.authorization = Signet::OAuth2::Client.new(
+    :token_credential_uri => 'https://accounts.google.com/o/oauth2/token',
+    :audience => 'https://accounts.google.com/o/oauth2/token',
     :scope => 'https://www.googleapis.com/auth/analytics.readonly',
-    :redirect_uri => 'http://localhost',
-    :access_type => 'offline'
-  })
-  access_token = client.auth_code.get_token(ENV['LEGATO_OAUTH_AUTH_CODE'], :redirect_uri => 'http://localhost')
-  response_json = access_token.get('https://www.googleapis.com/analytics/v3/management/accounts').body
-
-  JSON.parse(response_json)
+    :issuer => ENV['DASHING_GAPI_ISSUER'],
+    :signing_key => key)
+    
+  client.authorization.fetch_access_token!
+  
+  client
 end
 
 # Send page views per visit to dashboard
 SCHEDULER.every '30s', :first_in => '1s' do
   data = []
   
-  token = ga_oauth_connect()
+  client = ga_connect()
+  analytics = client.discovered_api('analytics', 'v3')
+  startDate = DateTime.now.prev_month.strftime("%Y-%m-%d")
+  endDate = DateTime.now.strftime("%Y-%m-%d")
   
-  puts token.inspect
+  visitCount = client.execute(:api_method => analytics.data.ga.get, :parameters => { 
+    'ids' => 'ga:' + profile_id_minnpost_com,
+    'start-date' => startDate,
+    'end-date' => endDate,
+    'dimensions' => 'ga:month,ga:week',
+    'metrics' => 'ga:pageviewsPerVisit'
+  })
+  
+  puts visitCount.data.column_headers.map { |c|
+    c.name  
+  }.join("\t")
+  
+  visitCount.data.rows.each do |r|
+    puts r.join("\t"), "\n"
+  end
   
   send_event('ga_pages_visit', :points => data )
 end
