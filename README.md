@@ -52,6 +52,8 @@ Install New Relic monitoring:
 In order to keep the Heroku instance running so that the long form scheduled tasks can run, New Relic is used to ping the website often.  This is hackish but allows to use Heroku.
 
 1. `heroku addons:add newrelic:standard`
+1. `heroku config:add NEW_RELIC_APP_NAME=<YOUR_APP_NAME>`
+1. Once data is available in the New Relic dashboard, go to Settings > Availability monitoring and set a ping.
 
 
 ## Authentication
