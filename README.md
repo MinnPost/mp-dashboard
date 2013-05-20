@@ -26,12 +26,20 @@ Set configuration:
 
 1. `heroku config:add DASHING_AUTH_TOKEN=your_token`
 1. `heroku config:add DASHING_OAUTH_DOMAIN=minnpost.com`
+1. `heroku config:set RACK_ENV=production`
     
 Install a database
 
 1. `heroku addons:add heroku-postgresql`
 1. This does not seem right, but the app requires a `DATABASE_URL` which heroku should make on deploy, but this is not working, so manually do this.  See your DB config with `heroku config`, then: `heroku config:add DATABASE_URL=the_string_from_the_other_config_value`
 1. `heroku run bundle exec rake db:migrate`
+
+Install New Relic monitoring:
+
+In order to keep the Heroku instance running so that the long form scheduled tasks can run, New Relic is used to ping the website often.  This is hackish but allows to use Heroku.
+
+1. `heroku addons:add newrelic:standard`
+
 
 ## Authentication
 
