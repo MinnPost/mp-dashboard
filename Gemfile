@@ -6,8 +6,6 @@ gem 'dashing'
 gem 'omniauth-google-apps'
 gem 'legato'
 gem 'oauth2'
-
-# Database gems
 gem 'activerecord'
 gem 'sinatra-activerecord'
  
@@ -17,4 +15,5 @@ end
  
 group :production do
   gem 'pg'
+  gem 'newrelic_rpm'
 end

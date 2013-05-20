@@ -7,6 +7,8 @@ configure :development, :test do
 end
  
 configure :production do
+   require 'newrelic_rpm'
+
   # Database connection
   db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
  
