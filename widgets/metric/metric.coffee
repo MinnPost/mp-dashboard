@@ -19,9 +19,10 @@ class Dashing.Metric extends Dashing.Widget
       element: @node
       width: width
       height: height
+      padding: { top: 0.25, right: 0, bottom: 0, left: 0 }
       series: [{
         color: @graphColor,
-        data: [{ x:0, y: 0 }]
+        data: [{ x: 0, y: 0 }]
       }]
     )
     
