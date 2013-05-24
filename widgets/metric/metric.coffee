@@ -41,7 +41,7 @@ class Dashing.Metric extends Dashing.Widget
     hover = new Rickshaw.Graph.HoverDetail({
       graph: @graph,
       formatter: (series, x, y) ->
-        'Links at ' + new moment.unix(x).format('L LT') + ': <br />' + y
+        y
     });
     
     @graph.render()
