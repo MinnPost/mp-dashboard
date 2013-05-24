@@ -57,12 +57,13 @@ SCHEDULER.every '1h', :first_in => '1s' do
     'start-date' => start_date,
     'end-date' => end_date,
     'dimensions' => 'ga:year,ga:month',
-    'metrics' => 'ga:pageviewsPerVisit'
+    'metrics' => 'ga:pageviewsPerVisit',
+    'filters' => 'ga:region==Minnesota'
   })
   
   per_month.data.rows.each do |r|
     data << { :x => DateTime.strptime(r[0] + r[1], '%Y%m').to_i , :y => r[2].to_f.round(3) }
   end
   
-  send_event('google_analytics_page_views_per_visit', :points => data )
+  send_event('google_analytics_page_views_per_visit_mn', :points => data )
 end
