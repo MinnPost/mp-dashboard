@@ -23,7 +23,7 @@ def get_fb_stats
 end
 
 # Save metric: link stats
-SCHEDULER.cron '0 15 * * * *' do
+SCHEDULER.cron '0 15 23 * * *' do
   @metric = Metric.new({
     :metric => 'fb_link_stats',
     :created => Time.now,
