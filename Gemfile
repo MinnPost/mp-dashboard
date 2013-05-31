@@ -7,6 +7,7 @@ gem 'omniauth-google-apps'
 gem 'google-api-client'
 gem 'activerecord'
 gem 'sinatra-activerecord'
+gem 'gibbon'
  
 group :development, :test do
   gem 'sqlite3'
