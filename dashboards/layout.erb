@@ -13,10 +13,19 @@
   <link rel="stylesheet" href="/assets/application.css">
 
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
-  <link rel="icon" href="/assets/favicon.ico">
+  <link rel="icon" href="/assets/images/minnpost-favicon.ico">
+  <link rel="apple-touch-icon" href="/sites/default/themes/siteskin/inc/images/minnpost-apple-touch-icon.png" />
 
 </head>
   <body>
+    <div id="menu">
+      <ul>
+        <li><a href="/" class="menu-home"><span>Home</span></a></li>
+        <li><a href="/traffic-intensity" class="menu-traffic-intesity"><span>Traffic Intensity</span></a></li>
+        <li><a href="/email-marketing" class="menu-email-arketing"><span>Email and Marketing</span></a></li>
+      </ul>
+    </div>
+  
     <div id="container">
       <%= yield %>
     </div>
