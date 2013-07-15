@@ -19,6 +19,8 @@ $text-danger-color: #fff;
 $background-menu-item: #565656;
 $border-bottom-menu-item: #676767;
 $text-menu-item-hover: rgba(233, 233, 233, 0.9);
+$text-menu-item-background: rgba(2, 2, 2, 0.5);
+
 
 @-webkit-keyframes status-warning-background {
   0%   { background-color: $background-warning-color-1; }
@@ -283,6 +285,10 @@ h3 {
         border-bottom: 1px solid $border-bottom-menu-item;
         opacity: 0.9;
         vertical-align: middle;
+        background-position: center center;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-image: url('/assets/circle-256.png');
         
         span {
           height: 0;
@@ -301,7 +307,10 @@ h3 {
           width: 400px;
           color: $text-menu-item-hover;
           margin-left: 60px;
-          padding-top: 5px;
+          padding: 10px .5em;
+          background-color: $text-menu-item-background;
+          height: 1.5em;
+          border-radius: 3px;
         }
       }
     }
