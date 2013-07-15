@@ -2,18 +2,20 @@
 // Sass declarations
 // ----------------------------------------------------------------------------
 $background-color:  #dc5945;
-$title-color: rgba(255, 255, 255, 0.7);
-$tick-color: #BDBDBD;
+$heading-background-color: rgba(0, 0, 0, 0.25);
+$title-color: rgba(255, 255, 255, 0.85);
+$tick-color: rgba(255, 255, 255, 0.8);
 
 
 // ----------------------------------------------------------------------------
 // Widget-graph styles
 // ----------------------------------------------------------------------------
-.widget-metric {
+.widget.widget-metric {
 
   background-color: $background-color;
   position: relative;
-
+  padding: 0;
+  vertical-align: top;
 
   svg {
     position: absolute;
@@ -22,14 +24,31 @@ $tick-color: #BDBDBD;
     left: 0px;
     top: 0px;
   }
-
-  .title, .value {
+  
+  .heading {
     position: relative;
     z-index: 99;
-  }
-
-  .title {
+    text-align: left;
     color: $title-color;
+    background: $heading-background-color;
+    padding: .5em;
+    
+    .heading-title {
+      margin-bottom: .5em;
+    
+      .value {
+        font-weight: bold;
+        display: block;
+        float: right;
+        width: 25%;
+        text-align: right;
+        font-size: 2em;
+      }
+    }
+    
+    .heading-details {
+      font-size: .85em;
+    }
   }
   
   .y_ticks text,
@@ -42,7 +61,12 @@ $tick-color: #BDBDBD;
   }
   
   .detail .x_label {
-    top: 4px;
-    background: none;
+    display: none;
+  }
+  
+  .detail .item {
+    line-height: 1.25em;
+    padding: 0.5em;
+    text-align: left;
   }
 }

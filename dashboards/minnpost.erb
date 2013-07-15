@@ -1,11 +1,13 @@
 <% content_for(:title) { "Home | MinnPost dashboard" } %>
+
+<% content_for(:header_title) { "MinnPost Dashboard" } %>
+
 <div class="gridster">
   <ul>
   
     <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div data-id="fb_link_stats_total_count" data-view="Metric" data-title="FB Links"></div>
+      <div data-id="fb_link_stats_total_count" data-view="Metric" data-title="FB Links" data-interval="day"></div>
     </li>
-    
 
   </ul>
 </div>

@@ -6,6 +6,22 @@ Include widget:
 Send data:
 send_event('your-data-id', single_data_point)
 -->
-<h1 class="title" data-bind="title"></h1>
-
-<h2 class="value" data-bind="current | prettyNumber | prepend prefix"></h2>
+<div class="heading">
+  <div class="heading-title">
+    <span class="title" data-bind="title"></span>: 
+    <span class="value" data-bind="current | prettyNumber | prepend prefix"></span>
+  </div>
+  
+  <div class="heading-details">
+    <span class="details-start-date" data-bind="start_date"></span> -
+    <span class="details-end-date" data-bind="end_date"></span>
+    
+    <!--
+    <span class="details-change-first-interval" data-bind="change_first_interval"></span> from last
+    <span class="details-change-first-interval-label" data-bind="change_first_interval_label"></span>
+    
+    <span class="details-change-second-interval" data-bind="change_second_interval"></span> from last
+    <span class="details-change-second-interval-label" data-bind="change_second_interval_label"></span>
+    -->
+  </div>
+</div>

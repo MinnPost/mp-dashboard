@@ -1,6 +1,7 @@
 require 'openid/store/filesystem'
 require 'omniauth/strategies/google_apps'
 require 'dashing'
+require 'sinatra/content_for'
 require './config/environments'
 
 # General configuration
@@ -8,6 +9,7 @@ configure do
   set :auth_token, ENV['DASHING_AUTH_TOKEN']
   set :default_dashboard, 'minnpost'
 
+  helpers Sinatra::ContentFor
   helpers do
     def protected!
      # Put any authentication code you want in here.
