@@ -21,3 +21,14 @@ Dashing.on 'ready', ->
       draggable:
         stop: Dashing.showGridsterInstructions
         start: -> Dashing.currentWidgetPositions = Dashing.getWidgetPositions()
+
+
+# Add in some Batman filters
+Batman.mixin Batman.Filters,
+  percentChange: (number) ->
+    return undefined if typeof number is 'undefined'
+    
+    if (number > 0)
+      return '+' + Batman.Filters.prettyNumber(number) + '%'
+    else 
+      return Batman.Filters.prettyNumber(number) + '%'

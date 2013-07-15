@@ -6,22 +6,22 @@ Include widget:
 Send data:
 send_event('your-data-id', single_data_point)
 -->
-<div class="heading">
-  <div class="heading-title">
-    <span class="title" data-bind="title"></span>: 
-    <span class="value" data-bind="current | prettyNumber | prepend prefix"></span>
+<div class="heading clearfix">
+  <div class="heading-right">
+    <div class="heading-value" data-bind="current | prettyNumber"></div>
+  
+    <div>
+      <span class="details-change-first-interval" data-bind="change_first_interval | percentChange" data-bind-title="change_first_interval_label"></span> / 
+      <span class="details-change-second-interval" data-bind="change_second_interval | percentChange" data-bind-title="change_second_interval_label"></span>
+    </div>
   </div>
   
-  <div class="heading-details">
-    <span class="details-start-date" data-bind="start_date"></span> -
-    <span class="details-end-date" data-bind="end_date"></span>
-    
-    <!--
-    <span class="details-change-first-interval" data-bind="change_first_interval"></span> from last
-    <span class="details-change-first-interval-label" data-bind="change_first_interval_label"></span>
-    
-    <span class="details-change-second-interval" data-bind="change_second_interval"></span> from last
-    <span class="details-change-second-interval-label" data-bind="change_second_interval_label"></span>
-    -->
+  <div class="heading-left">
+    <div class="heading-title" data-bind="title"></div>
+  
+    <div class="heading-range">
+      <span class="details-start-date" data-bind="start_date"></span> -
+      <span class="details-end-date" data-bind="end_date"></span>
+    </div>
   </div>
 </div>

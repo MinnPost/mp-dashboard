@@ -1,8 +1,26 @@
 class Dashing.Metric extends Dashing.Widget
   xformatter: {
-    'day': 'MMM DD',
-    'week': 'YYYY ww',
-    'month': 'YYYY MMM'
+    'day': {
+      axis_label: 'MMM DD',
+      hover_label: 'MMM DD',
+      change_first_label: 'from yesterday',
+      change_second_label: 'from last month',
+      change_second_points: 30
+    },
+    'week': {
+      axis_label: 'YYYY MMM',
+      hover_label: 'YYYY [week:] ww',
+      change_first_label: 'from last week',
+      change_second_label: 'from ~6 months',
+      change_second_points: 24
+    },
+    'month': {
+      axis_label: 'YYYY MMM',
+      hover_label: 'YYYY MMM',
+      change_first_label: 'from last month',
+      change_second_label: 'from last year',
+      change_second_points: 12
+    }
   }
   
   interval: 'month'
@@ -48,23 +66,38 @@ class Dashing.Metric extends Dashing.Widget
       graph: @graph
       pixelsPerTick: 80
       tickFormat: (x) ->
-        moment.unix(x).format(xformatter[interval])
+        moment.unix(x).format(xformatter[interval].axis_label)
     });
     
     hover = new Rickshaw.Graph.HoverDetail({
       graph: @graph,
       formatter: (series, x, y) ->
-        y + '<br />' + moment.unix(x).format(xformatter[interval])
+        y + '<br />' + moment.unix(x).format(xformatter[interval].hover_label)
     });
     
     @graph.render()
 
   onData: (data) ->
+    last = data.points.length - 1
+    settings = @xformatter[@interval]
+  
     # Update graph
     if @graph
       @graph.series[0].data = data.points
       @graph.render()
       
-    # Update details
-    @start_date = moment.unix(data.points[0].x).format(@xformatter[@interval])
-    @end_date = moment.unix(data.points[data.points.length - 1].x).format(@xformatter[@interval])
+    # Update range details
+    @start_date = moment.unix(data.points[0].x).format(settings.axis_label)
+    @end_date = moment.unix(data.points[last].x).format(settings.axis_label)
+    
+    # Update intervals
+    @change_first_interval = ((data.points[last].y - data.points[last - 1].y) / 
+      data.points[last - 1].y * 100).toFixed(2)
+    @change_first_interval_label = 'Change ' + settings.change_first_label + ', ' +  
+      moment.unix(data.points[last - 1].x).format(settings.hover_label)
+    
+    @change_second_interval = ((data.points[last].y - data.points[last - 
+      settings.change_second_points].y) / data.points[last - 
+      settings.change_second_points].y * 100).toFixed(2)
+    @change_second_interval_label = 'Change ' + settings.change_second_label + ', ' +  
+      moment.unix(data.points[last - settings.change_second_points].x).format(settings.hover_label)
