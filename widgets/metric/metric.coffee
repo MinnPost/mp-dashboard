@@ -1,3 +1,10 @@
+##
+# JS for file metric
+##
+metricColors = ['#DC5B47', '#477DDC', '#47DC5B', '#DCA547']
+metricColor = 0;
+
+# 
 class Dashing.Metric extends Dashing.Widget
   xformatter: {
     'day': {
@@ -11,8 +18,8 @@ class Dashing.Metric extends Dashing.Widget
       axis_label: 'YYYY MMM',
       hover_label: 'YYYY [week:] ww',
       change_first_label: 'from last week',
-      change_second_label: 'from ~6 months',
-      change_second_points: 24
+      change_second_label: 'from last year',
+      change_second_points: 51
     },
     'month': {
       axis_label: 'YYYY MMM',
@@ -31,10 +38,14 @@ class Dashing.Metric extends Dashing.Widget
     points = @get('points')
     if points
       points[points.length - 1].y
+  
+  setBackground: ->
+    $(@node).parent().css('background-color', metricColors[metricColor])
+    metricColor = if metricColor == metricColors.length - 1 then 0 else metricColor + 1
 
   ready: ->
-    @graphColor = @graphColor || '#C93C26' #'rgba(0, 0, 0, 0.5)'
     container = $(@node).parent()
+    @setBackground()
     interval = @interval
     xformatter = @xformatter
 
@@ -49,7 +60,7 @@ class Dashing.Metric extends Dashing.Widget
       height: height
       padding: { top: 1, right: 0, bottom: 0, left: 0 }
       series: [{
-        color: @graphColor,
+        color: 'rgba(0, 0, 0, 0.3)',
         data: [{ x: 0, y: 0 }]
       }]
     )
@@ -87,17 +98,19 @@ class Dashing.Metric extends Dashing.Widget
       @graph.render()
       
     # Update range details
-    @start_date = moment.unix(data.points[0].x).format(settings.axis_label)
-    @end_date = moment.unix(data.points[last].x).format(settings.axis_label)
+    @set('start_date', moment.unix(data.points[0].x).format(settings.axis_label))
+    @set('end_date',  moment.unix(data.points[last].x).format(settings.axis_label))
     
     # Update intervals
-    @change_first_interval = ((data.points[last].y - data.points[last - 1].y) / 
-      data.points[last - 1].y * 100).toFixed(2)
-    @change_first_interval_label = 'Change ' + settings.change_first_label + ', ' +  
-      moment.unix(data.points[last - 1].x).format(settings.hover_label)
+    @set('change_first_interval', if (!data.points[last - 1].y) then 0 else
+      ((data.points[last].y - data.points[last - 1].y) / 
+      data.points[last - 1].y * 100).toFixed(2))
+    @set('change_first_interval_label', 'Change ' + settings.change_first_label + ', ' +  
+      moment.unix(data.points[last - 1].x).format(settings.hover_label))
     
-    @change_second_interval = ((data.points[last].y - data.points[last - 
+    @set('change_second_interval', if (!data.points[last - settings.change_second_points].y) then 0 else
+      ((data.points[last].y - data.points[last - 
       settings.change_second_points].y) / data.points[last - 
-      settings.change_second_points].y * 100).toFixed(2)
-    @change_second_interval_label = 'Change ' + settings.change_second_label + ', ' +  
-      moment.unix(data.points[last - settings.change_second_points].x).format(settings.hover_label)
+      settings.change_second_points].y * 100).toFixed(2))
+    @set('change_second_interval_label', 'Change ' + settings.change_second_label + ', ' +  
+      moment.unix(data.points[last - settings.change_second_points].x).format(settings.hover_label))

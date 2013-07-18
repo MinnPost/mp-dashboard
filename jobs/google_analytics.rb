@@ -16,6 +16,9 @@ require './models/metric'
 #
 # https://developers.google.com/analytics/devguides/reporting/core/v3/
 # https://developers.google.com/analytics/devguides/reporting/core/v3/limits-quotas
+#
+# The query explorer can help:
+# http://ga-dev-tools.appspot.com/explorer/
 ##
 
 # Global for Google API client, probably not the best.
@@ -71,7 +74,7 @@ SCHEDULER.every '1d', :first_in => '1s' do
 end
 
 # Average visits per month
-SCHEDULER.every '1d', :first_in => '5s' do
+SCHEDULER.every '1d', :first_in => '3s' do
   data = []
   ga_connect()
   analytics = $gapi_client.discovered_api('analytics', 'v3')
@@ -90,7 +93,12 @@ SCHEDULER.every '1d', :first_in => '5s' do
   
   # ga:year 	ga:month 	ga:visitors 	ga:visits 
   per_month.data.rows.each do |r|
-    data << { :x => DateTime.strptime(r[0] + r[1], '%Y%m').to_i , :y => (r[3].to_f / r[2].to_f).round(3) }
+    y = (r[3].to_f / r[2].to_f).round(3);
+    if r[2].to_f == 0
+      y = 0
+    end
+    
+    data << { :x => DateTime.strptime(r[0] + r[1], '%Y%m').to_i , :y => y }
   end
   
   send_event('google_analytics_visits_month_mn', :points => data )
@@ -117,8 +125,40 @@ SCHEDULER.every '1d', :first_in => '5s' do
   
   # ga:year 	ga:month 	ga:visitors 	ga:visits 
   per_week.data.rows.each do |r|
-    data << { :x => DateTime.strptime(r[0] + r[1], '%Y%W').to_i , :y => (r[3].to_f / r[2].to_f).round(3) }
+    y = (r[3].to_f / r[2].to_f).round(3);
+    if r[2].to_f == 0
+      y = 0
+    end
+    
+    data << { :x => DateTime.strptime(r[0] + r[1], '%Y%W').to_i , :y => y }
   end
   
   send_event('google_analytics_visits_week_mn', :points => data )
+end
+
+# Visit duration (average time on site)
+SCHEDULER.every '1d', :first_in => '7s' do
+  data = []
+  ga_connect()
+  analytics = $gapi_client.discovered_api('analytics', 'v3')
+  
+  # Get last year per week
+  start_date = DateTime.now.prev_year.strftime('%Y-%m-%d')
+  end_date = DateTime.now.strftime('%Y-%m-01')
+  per_month = $gapi_client.execute(:api_method => analytics.data.ga.get, :parameters => { 
+    'ids' => 'ga:' + ga_profile_id_minnpost_com,
+    'start-date' => start_date,
+    'end-date' => end_date,
+    'dimensions' => 'ga:year,ga:month',
+    'metrics' => 'ga:avgTimeOnSite',
+    'filters' => 'ga:region==Minnesota',
+    'max-results' => '1000'
+  })
+  
+  # ga:year 	ga:month 	ga:visitors 	ga:visits 
+  per_month.data.rows.each do |r|
+    data << { :x => DateTime.strptime(r[0] + r[1], '%Y%m').to_i , :y => r[2].to_f.round(2) }
+  end
+  
+  send_event('google_analytics_visit_duration_month_mn', :points => data )
 end
